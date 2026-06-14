@@ -1,50 +1,42 @@
 import React from 'react';
 import HeroSlider from '@/components/home/HeroSlider';
-import StatsBar from '@/components/home/StatsBar';
-import AboutSnapshot from '@/components/home/AboutSnapshot';
-import ProgramsSection from '@/components/home/ProgramsSection';
-import FacilitiesSection from '@/components/home/FacilitiesSection';
 import WhyChooseUs from '@/components/home/WhyChooseUs';
+import StatsBar from '@/components/home/StatsBar';
+import CampusLifeShowcase from '@/components/home/CampusLifeShowcase';
 import GalleryPreview from '@/components/home/GalleryPreview';
+import AcademicExcellence from '@/components/home/AcademicExcellence';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
-import NewsPreview from '@/components/home/NewsPreview';
-import FAQSection from '@/components/home/FAQSection';
+import FacilitiesSection from '@/components/home/FacilitiesSection';
 import HomeContactSection from '@/components/home/HomeContactSection';
 
 export default function Home() {
   return (
     <>
-      {/* 1. Hero Slider Section */}
+      {/* 1. Hero Section */}
       <HeroSlider />
 
-      {/* 2. Animated Stats Bar Section */}
-      <StatsBar />
-
-      {/* 3. About School Snapshot */}
-      <AboutSnapshot />
-
-      {/* 4. Academic Programs Grid */}
-      <ProgramsSection />
-
-      {/* 5. World-Class Infrastructure Facilities */}
-      <FacilitiesSection />
-
-      {/* 6. Why Parents Choose CMR */}
+      {/* 2. Why CMR Section */}
       <WhyChooseUs />
 
-      {/* 7. Gallery Highlights */}
+      {/* 3. Statistics & Achievements */}
+      <StatsBar />
+
+      {/* 4. Campus Life Showcase */}
+      <CampusLifeShowcase />
+
+      {/* 5. Gallery Section */}
       <GalleryPreview />
 
-      {/* 8. Parents Testimonials */}
+      {/* 6. Academic Excellence */}
+      <AcademicExcellence />
+
+      {/* 7. Student Testimonials */}
       <TestimonialsSection />
 
-      {/* 9. Latest News & Blog Updates */}
-      <NewsPreview />
+      {/* 8. Facilities Showcase */}
+      <FacilitiesSection />
 
-      {/* 10. Frequently Asked Questions Accordion */}
-      <FAQSection />
-
-      {/* 11. Admissions Enquiry Form & Map */}
+      {/* 9. Admissions Section */}
       <HomeContactSection />
     </>
   );

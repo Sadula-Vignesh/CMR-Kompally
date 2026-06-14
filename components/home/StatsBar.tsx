@@ -1,77 +1,107 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { Award, GraduationCap, School, ShieldCheck } from 'lucide-react';
 import { STATS } from '@/lib/constants';
+
+const ICONS = [
+  School,         // World-Class Facilities
+  GraduationCap,  // Enrolled Students
+  Award,          // Years of Legacy
+  ShieldCheck     // Active Clubs (represented as secure holistic activities)
+];
 
 function CountUpNumber({ value, suffix }: { value: number; suffix: string }) {
   const [count, setCount] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
   const elementRef = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(elementRef, { once: true, amount: 0.3 });
 
   useEffect(() => {
-    const currentElement = elementRef.current;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setHasStarted(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (currentElement) {
-      observer.observe(currentElement);
+    if (isInView) {
+      setHasStarted(true);
     }
-
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-    };
-  }, []);
+  }, [isInView]);
 
   useEffect(() => {
     if (!hasStarted) return;
     
-    let start = 0;
+    const startTime = performance.now();
     const end = value;
-    const duration = 1500; // 1.5 seconds animation
-    const increment = Math.ceil(end / (duration / 16)); // ~60fps refresh rate
+    const duration = 2000; // 2 seconds duration for all numbers
     
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= end) {
+    let animationFrameId: number;
+    
+    const updateCount = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      if (elapsed >= duration) {
         setCount(end);
-        clearInterval(timer);
       } else {
-        setCount(start);
+        const progress = elapsed / duration;
+        // Smooth ease-out quad animation curve
+        const easeOutQuad = 1 - (1 - progress) * (1 - progress);
+        setCount(Math.floor(easeOutQuad * end));
+        animationFrameId = requestAnimationFrame(updateCount);
       }
-    }, 16);
-
-    return () => clearInterval(timer);
+    };
+    
+    animationFrameId = requestAnimationFrame(updateCount);
+    
+    return () => cancelAnimationFrame(animationFrameId);
   }, [hasStarted, value]);
 
   return (
-    <span ref={elementRef} className="text-4xl md:text-5xl font-bold font-body text-brand-orange select-none">
+    <span ref={elementRef} className="text-3xl md:text-5xl font-black font-display text-brand-orange select-none tracking-tight">
       {count}{suffix}
     </span>
   );
 }
 
 export default function StatsBar() {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.1 });
+
   return (
-    <section className="bg-brand-navy py-10 border-y border-brand-gold/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center items-center divide-y lg:divide-y-0 lg:divide-x divide-white/10">
-          {STATS.map((stat, idx) => (
-            <div key={idx} className={`flex flex-col items-center justify-center ${idx >= 2 ? 'pt-6 lg:pt-0' : 'pb-6 lg:pb-0'}`}>
-              <CountUpNumber value={stat.value} suffix={stat.suffix} />
-              <span className="text-gray-300 text-xs md:text-sm font-semibold uppercase tracking-wider mt-2">
-                {stat.label}
-              </span>
+    <section className="bg-white py-16 md:py-24 relative overflow-hidden">
+      {/* Decorative glows */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-brand-orange/5 blur-3xl pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30">
+        <motion.div
+          ref={containerRef}
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="bg-brand-cream/40 backdrop-blur-xl rounded-3xl border border-brand-gold/15 shadow-xl px-6 py-8 md:px-10 md:py-10 grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 divide-y lg:divide-y-0 lg:divide-x divide-slate-200/60"
+        >
+        {STATS.map((stat, idx) => {
+          const IconComp = ICONS[idx] || Award;
+          return (
+            <div
+              key={idx}
+              className={`flex items-start gap-4 justify-start ${
+                idx >= 2 ? 'pt-6 lg:pt-0 lg:pl-8' : 'pb-6 lg:pb-0 lg:pl-4'
+              } ${idx === 1 || idx === 3 ? 'pl-2' : ''}`}
+            >
+              {/* Icon Container */}
+              <div className="p-3 bg-brand-navy/5 text-brand-navy rounded-2xl shrink-0 group hover:bg-brand-navy hover:text-white transition-all duration-300">
+                <IconComp className="w-6 h-6 stroke-[1.5]" />
+              </div>
+
+              {/* Number and Description Details */}
+              <div className="flex flex-col">
+                <div className="flex items-baseline">
+                  <CountUpNumber value={stat.value} suffix={stat.suffix} />
+                </div>
+                <span className="text-slate-500 text-xs md:text-sm font-bold font-body tracking-wide mt-1 leading-snug">
+                  {stat.label}
+                </span>
+              </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
+      </motion.div>
       </div>
     </section>
   );

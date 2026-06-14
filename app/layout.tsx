@@ -6,6 +6,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import EnquiryPopup from '@/components/layout/EnquiryPopup';
 import AdmissionsSidebar from '@/components/layout/AdmissionsSidebar';
+import ClientLayoutWrapper from '@/components/layout/ClientLayoutWrapper';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -49,11 +50,13 @@ export default function RootLayout({
       className={`${outfit.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white font-body antialiased">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <EnquiryPopup />
-        <AdmissionsSidebar />
+        <ClientLayoutWrapper>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+          <EnquiryPopup />
+          <AdmissionsSidebar />
+        </ClientLayoutWrapper>
         <Analytics />
       </body>
     </html>

@@ -12,8 +12,8 @@ export default function Card({
   hoverEffect = true,
 }: CardProps) {
   return (
-    <div className={`bg-white rounded-xl p-6 shadow-sm border border-gray-100 ${
-      hoverEffect ? 'hover:-translate-y-1 transition-all duration-300 hover:shadow-md' : ''
+    <div className={`bg-white rounded-2xl p-6 shadow-sm border border-slate-150/60 ${
+      hoverEffect ? 'hover:-translate-y-1.5 hover:shadow-xl hover:shadow-slate-200/40 hover:border-slate-200/80 transition-all duration-300' : ''
     } ${className}`}>
       {children}
     </div>

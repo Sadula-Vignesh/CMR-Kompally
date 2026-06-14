@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ChevronDown, PhoneCall, Phone } from 'lucide-react';
-import { NAV_LINKS, SCHOOL_NAME, SCHOOL_PHONE } from '@/lib/constants';
-import Button from '@/components/ui/Button';
+import { motion } from 'framer-motion';
+import { Menu, X, ChevronDown, Phone } from 'lucide-react';
+import { NAV_LINKS, SCHOOL_PHONE } from '@/lib/constants';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,74 +46,102 @@ export default function Navbar() {
           isScrolled ? 'pt-2' : 'pt-4 md:pt-5'
         }`}
       >
-        <div
-          className={`pointer-events-auto max-w-7xl mx-auto w-[92%] sm:w-[94%] md:w-full bg-white/95 backdrop-blur-md rounded-full shadow-lg border border-gray-100 px-4 sm:px-6 lg:px-8 flex justify-between items-center transition-all duration-300 ${
-            isScrolled ? 'py-1.5 shadow-xl border-gray-200/50' : 'py-3'
+        <motion.div
+          initial={{ y: -80, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 3 }}
+          className={`pointer-events-auto max-w-[1480px] mx-auto w-[96%] lg:w-[96%] xl:w-[95%] bg-white/95 backdrop-blur-md rounded-full shadow-lg border border-slate-100/80 px-4 sm:px-6 lg:px-6 xl:px-8 flex justify-between items-center transition-all duration-300 ${
+            isScrolled ? 'py-1.5 shadow-xl border-slate-200/50' : 'py-2.5'
           }`}
         >
           {/* Logo Section */}
-          <Link href="/" className="flex items-center gap-3 select-none">
-            <div className="relative w-10 h-10 md:w-11 md:h-11 overflow-hidden rounded-md shrink-0 border border-gray-100 bg-white">
-              <Image
-                src="/images/cmr_logo.jpg"
-                alt="CMR Logo"
-                fill
-                sizes="44px"
-                className="object-contain"
-              />
-            </div>
-            
-            {/* Divider Line */}
-            <div className="h-8 md:h-9 w-[1.5px] bg-brand-navy/25 shrink-0" />
-            
-            {/* Text details matching reference image styling */}
-            <div className="flex flex-col font-display leading-[1.05] select-none text-left">
-              <span className="font-extrabold text-brand-navy text-sm md:text-base tracking-tight">
-                CMR
-              </span>
-              <span className="font-extrabold text-brand-navy text-sm md:text-base tracking-tight">
-                SCHOOL
-              </span>
-              <span className="font-bold text-brand-orange text-[9px] md:text-[10px] tracking-wider uppercase">
-                KOMPALLY
-              </span>
-            </div>
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 3.1, ease: "easeOut" }}
+          >
+            <Link href="/" className="flex items-center gap-3 select-none group shrink-0">
+              <div className="relative w-10 h-10 md:w-11 md:h-11 overflow-hidden rounded-full shrink-0 border border-slate-100 bg-white p-0.5 shadow-sm transition-transform duration-300 group-hover:scale-105">
+                <Image
+                  src="/images/cmr_logo.jpg"
+                  alt="CMR Logo"
+                  fill
+                  sizes="44px"
+                  className="object-contain rounded-full"
+                  priority
+                />
+              </div>
+              
+              {/* Divider Line */}
+              <div className="h-8 w-[1.5px] bg-brand-navy/15 shrink-0" />
+              
+              {/* Logo Text - Unified vertical spacing gaps */}
+              <div className="flex flex-col gap-[3px] font-display select-none text-left justify-center">
+                <span className="font-black text-brand-navy text-[13px] leading-none tracking-tight transition-colors group-hover:text-brand-orange duration-350">
+                  CMR
+                </span>
+                <span className="font-black text-brand-navy text-[13px] leading-none tracking-tight transition-colors group-hover:text-brand-orange duration-350">
+                  SCHOOL
+                </span>
+                <span className="font-extrabold text-brand-orange text-[9.5px] leading-none tracking-wider uppercase">
+                  KOMPALLY
+                </span>
+              </div>
+            </Link>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-0.5 xl:space-x-1 font-body">
+          <motion.nav 
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.08,
+                  delayChildren: 3.2,
+                }
+              }
+            }}
+            initial="hidden"
+            animate="visible"
+            className="hidden lg:flex items-center lg:space-x-1 xl:space-x-2.5 2xl:space-x-3.5 font-body"
+          >
             {NAV_LINKS.map((link) => {
               const hasChildren = !!link.children;
               const isActive = pathname === link.href || link.children?.some(c => pathname === c.href);
               
               if (hasChildren) {
                 return (
-                  <div
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: -10 },
+                      visible: { opacity: 1, y: 0 }
+                    }}
                     key={link.label}
-                    className="relative group py-2"
+                    className="relative group py-1.5"
                     onMouseEnter={() => setActiveDropdown(link.label)}
                     onMouseLeave={() => setActiveDropdown(null)}
                   >
                     <button
-                      className={`inline-flex items-center text-xs lg:text-sm font-semibold transition-all duration-200 gap-1 focus:outline-none cursor-pointer px-3 py-1.5 rounded-full ${
+                      className={`inline-flex items-center text-xs xl:text-[13px] 2xl:text-sm font-bold transition-all duration-300 gap-1 focus:outline-none cursor-pointer px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-full whitespace-nowrap ${
                         isActive
-                          ? 'bg-brand-navy text-white shadow-sm'
+                          ? 'bg-brand-navy/5 text-brand-orange'
                           : 'text-brand-navy hover:text-brand-orange hover:bg-brand-navy/5'
                       }`}
                     >
                       {link.label}
-                      <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" />
+                      <ChevronDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180" />
                     </button>
 
                     {/* Dropdown Menu */}
-                    <div className="absolute left-1/2 -translate-x-1/2 mt-3 w-56 rounded-2xl shadow-xl bg-white border border-gray-100 ring-1 ring-black/5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 transform origin-top group-hover:translate-y-0 -translate-y-2">
-                      <div className="py-2 px-1">
+                    <div className="absolute left-1/2 -translate-x-1/2 mt-2 w-56 rounded-2xl shadow-xl bg-white/95 backdrop-blur-md border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 transform origin-top group-hover:translate-y-0 -translate-y-2">
+                      <div className="py-2 px-1.5">
                         {link.children?.map((child) => (
                           <Link
                             key={child.label}
                             href={child.href}
-                            className={`block px-4 py-2 text-xs lg:text-sm transition-all rounded-xl font-medium text-gray-700 hover:bg-brand-cream hover:text-brand-navy ${
-                              pathname === child.href ? 'bg-brand-cream/80 text-brand-orange font-semibold' : ''
+                            className={`block px-4 py-2 text-xs lg:text-sm transition-all duration-200 rounded-xl font-bold text-slate-700 hover:bg-brand-cream hover:text-brand-orange whitespace-nowrap ${
+                              pathname === child.href ? 'bg-brand-cream/80 text-brand-orange font-bold' : ''
                             }`}
                           >
                             {child.label}
@@ -121,32 +149,44 @@ export default function Navbar() {
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               }
 
               return (
-                <Link
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: -10 },
+                    visible: { opacity: 1, y: 0 }
+                  }}
                   key={link.label}
-                  href={link.href}
-                  className={`text-xs lg:text-sm font-semibold px-3 py-1.5 rounded-full transition-all duration-200 ${
-                    isActive
-                      ? 'bg-brand-navy text-white shadow-sm'
-                      : 'text-brand-navy hover:text-brand-orange hover:bg-brand-navy/5'
-                  }`}
                 >
-                  {link.label}
-                </Link>
+                  <Link
+                    href={link.href}
+                    className={`text-xs xl:text-[13px] 2xl:text-sm font-bold px-2.5 py-1.5 xl:px-3.5 xl:py-2 rounded-full transition-all duration-300 whitespace-nowrap ${
+                      isActive
+                        ? 'bg-brand-navy/5 text-brand-orange'
+                        : 'text-brand-navy hover:text-brand-orange hover:bg-brand-navy/5'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               );
             })}
-          </nav>
+          </motion.nav>
 
           {/* Call to Action & Hamburger */}
-          <div className="flex items-center space-x-2 md:space-x-3">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 3.1, ease: "easeOut" }}
+            className="flex items-center space-x-2 xl:space-x-3 shrink-0"
+          >
             {/* Outline CALL US button */}
             <a
               href={`tel:${SCHOOL_PHONE}`}
-              className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 border border-brand-navy/20 hover:border-brand-navy/40 hover:bg-brand-navy/5 rounded-full text-xs font-bold text-brand-navy transition-all duration-300 cursor-pointer"
+              className="hidden xl:inline-flex items-center gap-1.5 px-4 py-2 border border-brand-navy/15 hover:border-brand-navy hover:bg-brand-navy/5 rounded-full text-xs font-bold text-brand-navy transition-all duration-300 cursor-pointer whitespace-nowrap"
             >
               <Phone className="w-3.5 h-3.5" />
               CALL US
@@ -155,14 +195,14 @@ export default function Navbar() {
             {/* Filled Admissions Open button */}
             <Link
               href="/admissions"
-              className="hidden sm:inline-flex items-center justify-center bg-[#5fa592] hover:bg-[#4e8e7c] text-white px-4.5 py-2 rounded-full text-xs font-bold shadow-sm transition-all duration-300 select-none whitespace-nowrap"
+              className="hidden sm:inline-flex items-center justify-center bg-brand-orange hover:bg-brand-orange/90 text-white px-4 py-2 xl:px-5 xl:py-2.5 rounded-full text-xs font-bold shadow-md hover:shadow-brand-orange/20 transition-all duration-300 select-none whitespace-nowrap hover:scale-[1.03] active:scale-[0.98]"
             >
               Admissions Open 2026-27
             </Link>
             
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-full text-brand-navy hover:bg-brand-navy/5 transition-colors focus:outline-none"
+              className="lg:hidden p-2 rounded-full text-brand-navy hover:bg-brand-navy/5 transition-colors focus:outline-none cursor-pointer"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -171,33 +211,33 @@ export default function Navbar() {
                 <Menu className="w-6 h-6" />
               )}
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </header>
 
       {/* Mobile Drawer Backdrop */}
       {mobileMenuOpen && (
         <div
-          className="fixed inset-0 z-45 bg-brand-navy/40 backdrop-blur-sm lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 z-45 bg-brand-dark/40 backdrop-blur-sm lg:hidden transition-opacity duration-300"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       {/* Mobile Drawer */}
       <div
-        className={`fixed top-0 right-0 bottom-0 z-50 w-80 bg-white shadow-2xl p-6 lg:hidden transition-transform duration-300 ease-in-out transform ${
+        className={`fixed top-0 right-0 bottom-0 z-50 w-80 bg-white/95 backdrop-blur-md shadow-2xl p-6 lg:hidden transition-transform duration-300 ease-in-out transform ${
           mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
-        <div className="flex justify-between items-center mb-8 border-b border-gray-100 pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="relative w-8 h-8 overflow-hidden rounded-md shrink-0 border border-gray-100 bg-white">
+        <div className="flex justify-between items-center mb-8 border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10 overflow-hidden rounded-full shrink-0 border border-brand-orange/20 bg-white p-0.5">
               <Image
                 src="/images/cmr_logo.jpg"
                 alt="CMR Logo"
                 fill
-                sizes="32px"
-                className="object-contain"
+                sizes="40px"
+                className="object-contain rounded-full"
               />
             </div>
             
@@ -219,30 +259,30 @@ export default function Navbar() {
           </div>
           <button
             onClick={() => setMobileMenuOpen(false)}
-            className="p-2 text-gray-500 hover:text-brand-navy focus:outline-none"
+            className="p-2 text-slate-500 hover:text-brand-navy focus:outline-none cursor-pointer rounded-full hover:bg-slate-100"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Mobile Navigation Links */}
-        <nav className="flex flex-col space-y-3 overflow-y-auto max-h-[calc(100vh-200px)] pr-2">
+        <nav className="flex flex-col space-y-3.5 overflow-y-auto max-h-[calc(100vh-220px)] pr-2">
           {NAV_LINKS.map((link) => {
             const hasChildren = !!link.children;
             const isDropdownActive = activeDropdown === link.label;
             
             if (hasChildren) {
               return (
-                <div key={link.label} className="border-b border-gray-50 pb-2">
+                <div key={link.label} className="border-b border-slate-50 pb-2">
                   <button
                     onClick={() => toggleDropdown(link.label)}
-                    className="w-full flex justify-between items-center text-sm font-semibold text-brand-navy py-1.5 focus:outline-none text-left"
+                    className="w-full flex justify-between items-center text-sm font-bold text-brand-navy py-1.5 focus:outline-none text-left cursor-pointer"
                   >
                     {link.label}
                     <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDropdownActive ? 'rotate-180' : ''}`} />
                   </button>
                   <div
-                    className={`pl-4 mt-1 space-y-1.5 overflow-hidden transition-all duration-300 ${
+                    className={`pl-4 mt-1.5 space-y-2 overflow-hidden transition-all duration-300 ${
                       isDropdownActive ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                     }`}
                   >
@@ -251,8 +291,8 @@ export default function Navbar() {
                         key={child.label}
                         href={child.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className={`block text-xs font-medium py-1.5 transition-colors ${
-                          pathname === child.href ? 'text-brand-orange font-bold' : 'text-gray-600 hover:text-brand-navy'
+                        className={`block text-xs font-semibold py-1.5 transition-colors ${
+                          pathname === child.href ? 'text-brand-orange font-bold' : 'text-slate-650 hover:text-brand-orange'
                         }`}
                       >
                         {child.label}
@@ -268,7 +308,7 @@ export default function Navbar() {
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`text-sm font-semibold py-1.5 border-b border-gray-50 block transition-colors ${
+                className={`text-sm font-semibold py-1.5 border-b border-slate-50 block transition-colors ${
                   pathname === link.href ? 'text-brand-orange' : 'text-brand-navy hover:text-brand-orange'
                 }`}
               >
@@ -279,16 +319,15 @@ export default function Navbar() {
         </nav>
 
         {/* Mobile Admissions CTA */}
-        <div className="absolute bottom-6 left-6 right-6 pt-4 border-t border-gray-100">
-          <Button
+        <div className="absolute bottom-6 left-6 right-6 pt-4 border-t border-slate-100">
+          <Link
             href="/admissions"
-            variant="orange"
-            className="w-full justify-center flex gap-2"
+            className="w-full justify-center flex gap-2 bg-brand-orange hover:bg-brand-orange/95 text-white py-3 rounded-full text-xs font-bold items-center"
             onClick={() => setMobileMenuOpen(false)}
           >
-            <PhoneCall className="w-4 h-4" />
+            <Phone className="w-4 h-4" />
             Admissions 2026-27
-          </Button>
+          </Link>
         </div>
       </div>
     </>

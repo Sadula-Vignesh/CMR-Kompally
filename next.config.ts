@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
     ],
   },
+  experimental: {
+    cpus: 2,
+  },
 };
 
 export default nextConfig;
