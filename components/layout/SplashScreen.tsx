@@ -35,7 +35,7 @@ export default function SplashScreen({ onComplete }: { onComplete: () => void })
           >
             <div className="relative w-full h-full rounded-full overflow-hidden">
               <Image
-                src="/images/cmr_logo.jpg"
+                src="/images/cmr_logo.png"
                 alt="CMR Logo"
                 fill
                 className="object-contain p-2 rounded-full"

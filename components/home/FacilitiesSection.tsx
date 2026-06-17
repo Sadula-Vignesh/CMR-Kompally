@@ -11,7 +11,7 @@ const INFRASTRUCTURE = [
     id: 0,
     title: "5 Acres Green Campus",
     icon: Building,
-    image: "/images/school_campus.png",
+    image: "/images/cmr_school.webp",
     description: "A secure, pollution-free, spacious learning habitat tailored to foster student wellness and outdoor academic interactions.",
     stats: "Secure perimeter & open learning bays"
   },
