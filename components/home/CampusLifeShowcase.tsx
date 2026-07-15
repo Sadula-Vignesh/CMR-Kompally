@@ -11,7 +11,7 @@ const CAMPUS_ITEMS = [
     id: 1,
     title: "Space Lab Astronomy Session",
     category: "Clubs",
-    image: "/images/space_lab.png",
+    image: "/images/IMG20240316114038-scaled.jpg",
     badgeColor: "bg-brand-orange text-white border-brand-orange/30",
     description: "Exploring the wonders of the cosmos through high-powered telescope arrays and interactive simulations.",
     tagline: "Cosmology & Science Exploration",
@@ -23,7 +23,7 @@ const CAMPUS_ITEMS = [
     id: 2,
     title: "Annual Sports Meet - Track Arena",
     category: "Sports",
-    image: "/images/sports_field.png",
+    image: "/images/IMG20231227145159-scaled.jpg",
     badgeColor: "bg-brand-green text-white border-brand-green/30",
     description: "A thrilling showcase of athletic excellence, team spirit, and competitive determination on our outdoor tracks.",
     tagline: "Sports & Physical Excellence",
@@ -59,7 +59,7 @@ const CAMPUS_ITEMS = [
     id: 5,
     title: "Group Coordination Exercises",
     category: "Sports",
-    image: "/images/children.jpg",
+    image: "/images/sports_field.png",
     badgeColor: "bg-brand-green text-white border-brand-green/30",
     description: "Building synergy, teamwork, and collaborative social dynamics through outdoor physical cooperative games.",
     tagline: "Teamwork & Synergy",
@@ -85,7 +85,6 @@ export default function CampusLifeShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
 
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -99,33 +98,16 @@ export default function CampusLifeShowcase() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Native mouse event listeners to reliably capture hover state
+  // Auto-play interval that pauses only when card is flipped
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const handleEnter = () => setIsHovered(true);
-    const handleLeave = () => setIsHovered(false);
-
-    el.addEventListener('mouseenter', handleEnter);
-    el.addEventListener('mouseleave', handleLeave);
-
-    return () => {
-      el.removeEventListener('mouseenter', handleEnter);
-      el.removeEventListener('mouseleave', handleLeave);
-    };
-  }, []);
-
-  // Auto-play interval that pauses when hovered or when card is flipped
-  useEffect(() => {
-    if (isFlipped || isHovered) return;
+    if (isFlipped) return;
 
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % CAMPUS_ITEMS.length);
     }, 4000); // Cycles every 4 seconds
 
     return () => clearInterval(interval);
-  }, [isFlipped, isHovered]);
+  }, [isFlipped]);
 
   // Circular rotation indexing offset calculations
   const getCardPosition = (index: number) => {
@@ -140,7 +122,8 @@ export default function CampusLifeShowcase() {
 
   // 3D positioning mapping
   const getStyles = (diff: number) => {
-    const xOffset = isMobile ? 210 : 440;
+    const xOffset1 = isMobile ? 110 : 380;
+    const xOffset2 = isMobile ? 200 : 720;
     
     if (diff === 0) {
       return {
@@ -150,37 +133,63 @@ export default function CampusLifeShowcase() {
         rotateY: 0,
         opacity: 1,
         zIndex: 30,
+        filter: "blur(0px)",
         pointerEvents: 'auto' as const
       };
     } else if (diff === 1) {
       return {
-        x: xOffset,
-        z: -100,
-        scale: isMobile ? 0.75 : 0.82,
-        rotateY: -25,
-        opacity: isMobile ? 0.35 : 0.7,
+        x: xOffset1,
+        z: -80,
+        scale: isMobile ? 0.78 : 0.85,
+        rotateY: -30,
+        opacity: isMobile ? 0.45 : 0.85,
         zIndex: 20,
+        filter: "blur(0px)",
         pointerEvents: 'auto' as const
       };
     } else if (diff === -1) {
       return {
-        x: -xOffset,
-        z: -100,
-        scale: isMobile ? 0.75 : 0.82,
-        rotateY: 25,
-        opacity: isMobile ? 0.35 : 0.7,
+        x: -xOffset1,
+        z: -80,
+        scale: isMobile ? 0.78 : 0.85,
+        rotateY: 30,
+        opacity: isMobile ? 0.45 : 0.85,
         zIndex: 20,
+        filter: "blur(0px)",
+        pointerEvents: 'auto' as const
+      };
+    } else if (diff === 2) {
+      return {
+        x: xOffset2,
+        z: -260,
+        scale: isMobile ? 0.58 : 0.68,
+        rotateY: -55,
+        opacity: isMobile ? 0.15 : 0.4,
+        zIndex: 10,
+        filter: "blur(3px)",
+        pointerEvents: 'auto' as const
+      };
+    } else if (diff === -2) {
+      return {
+        x: -xOffset2,
+        z: -260,
+        scale: isMobile ? 0.58 : 0.68,
+        rotateY: 55,
+        opacity: isMobile ? 0.15 : 0.4,
+        zIndex: 10,
+        filter: "blur(3px)",
         pointerEvents: 'auto' as const
       };
     } else {
       // Background items (far off)
       return {
-        x: diff * (isMobile ? 130 : 280),
-        z: -250,
-        scale: 0.6,
-        rotateY: diff > 0 ? -40 : 40,
+        x: diff * (isMobile ? 150 : 340),
+        z: -450,
+        scale: 0.5,
+        rotateY: diff > 0 ? -70 : 70,
         opacity: 0,
-        zIndex: 10,
+        zIndex: 5,
+        filter: "blur(6px)",
         pointerEvents: 'none' as const
       };
     }
@@ -228,7 +237,7 @@ export default function CampusLifeShowcase() {
       <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-brand-navy/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-brand-orange/5 rounded-full blur-[140px] pointer-events-none translate-x-1/3 translate-y-1/3" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header Block */}
         <div className="mb-16">
@@ -271,7 +280,8 @@ export default function CampusLifeShowcase() {
                   z: styles.z,
                   scale: styles.scale,
                   rotateY: styles.rotateY,
-                  opacity: styles.opacity
+                  opacity: styles.opacity,
+                  filter: styles.filter
                 }}
                 transition={{
                   type: "spring",
@@ -279,7 +289,7 @@ export default function CampusLifeShowcase() {
                   damping: 24,
                   mass: 0.8
                 }}
-                className="w-[300px] h-[420px] md:w-[380px] md:h-[540px] cursor-pointer"
+                className="w-[245px] h-[343px] md:w-[380px] md:h-[540px] cursor-pointer"
                 onClick={() => handleCardClick(idx)}
               >
                 

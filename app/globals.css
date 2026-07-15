@@ -25,6 +25,7 @@
     0% {
       transform: translateX(-100%);
     }
+
     100% {
       transform: translateX(100%);
     }
@@ -38,7 +39,12 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
 }
 
@@ -84,9 +90,11 @@ html {
   0% {
     transform: scale(1) translate(0, 0);
   }
+
   50% {
     transform: scale(1.08) translate(-1%, -0.5%);
   }
+
   100% {
     transform: scale(1) translate(0, 0);
   }
@@ -101,12 +109,15 @@ html {
   0% {
     transform: translate(0px, 0px) scale(1);
   }
+
   33% {
     transform: translate(30px, -50px) scale(1.1);
   }
+
   66% {
     transform: translate(-20px, 20px) scale(0.95);
   }
+
   100% {
     transform: translate(0px, 0px) scale(1);
   }
@@ -126,10 +137,13 @@ html {
 
 /* Subtle border glowing pulse */
 @keyframes border-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     border-color: rgba(232, 98, 10, 0.2);
     box-shadow: 0 0 15px rgba(232, 98, 10, 0.05);
   }
+
   50% {
     border-color: rgba(232, 98, 10, 0.5);
     box-shadow: 0 0 25px rgba(232, 98, 10, 0.15);
@@ -141,10 +155,13 @@ html {
 }
 
 @keyframes border-glow-navy {
-  0%, 100% {
+
+  0%,
+  100% {
     border-color: rgba(26, 43, 95, 0.1);
     box-shadow: 0 0 15px rgba(26, 43, 95, 0.02);
   }
+
   50% {
     border-color: rgba(26, 43, 95, 0.3);
     box-shadow: 0 0 25px rgba(26, 43, 95, 0.1);
@@ -179,6 +196,7 @@ html {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
@@ -188,4 +206,41 @@ html {
   background: linear-gradient(90deg, #f3f3f0 25%, #fafaf8 50%, #f3f3f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
+}
+
+/* Custom utilities for redesigned Hero Carousel */
+.clip-path-navy {
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.warm-vignette {
+  background: radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(25,15,5,0.45) 100%);
+}
+
+/* Wave flowing animation for Slide 2 */
+@keyframes wave-flow {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-wave-flow {
+  animation: wave-flow 18s linear infinite;
+}
+
+/* Pulse glow animation for Slide 3 */
+@keyframes pulse-glow {
+  0%, 100% { transform: scale(1); opacity: 0.3; filter: blur(40px); }
+  50% { transform: scale(1.2); opacity: 0.6; filter: blur(60px); }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 5s ease-in-out infinite;
+}
+
+/* Float floating animation for particles */
+@keyframes custom-float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(90deg); }
+  100% { transform: translateY(0px) rotate(180deg); }
+}
+.animate-custom-float {
+  animation: custom-float 10s ease-in-out infinite;
 }

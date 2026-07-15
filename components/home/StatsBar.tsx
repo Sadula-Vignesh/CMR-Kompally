@@ -67,7 +67,7 @@ export default function StatsBar() {
       {/* Decorative glows */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-brand-orange/5 blur-3xl pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-30">
+      <div className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 relative z-30">
         <motion.div
           ref={containerRef}
           initial={{ opacity: 0, y: 40 }}

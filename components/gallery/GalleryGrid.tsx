@@ -156,31 +156,11 @@ export default function GalleryGrid({ initialImages }: GalleryGridProps) {
                       loading="lazy"
                     />
 
-                    {/* Dark gradient overlay on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1e]/90 via-[#0a0a1e]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
-
                     {/* Category badge top-left corner */}
                     <div className="absolute top-4 left-4 z-20">
-                      <span className="px-3 py-1 bg-white/20 backdrop-blur-md border border-white/30 text-white rounded-full text-[10px] font-extrabold uppercase tracking-wider">
+                      <span className="px-3 py-1 bg-slate-100/90 border border-slate-200/50 text-slate-800 rounded-full text-[10px] font-extrabold uppercase tracking-wider shadow-sm">
                         {image.category}
                       </span>
-                    </div>
-
-                    {/* Hover Zoom Icon (Circular centered scale-in expand button) */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 z-20">
-                      <div className="w-[52px] h-[52px] bg-white/85 hover:bg-white text-[#1a1f4e] backdrop-blur-md rounded-full flex items-center justify-center scale-75 group-hover:scale-100 transition-all duration-500 ease-out shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M15 3h6v6" />
-                          <path d="M9 21H3v-6" />
-                          <path d="M21 3l-7 7" />
-                          <path d="M3 21l7-7" />
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* Text sliding UP on hover */}
-                    <div className="absolute bottom-0 left-0 right-0 p-5 text-white z-20 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <span className="text-[10px] text-[#f5802b] block tracking-widest uppercase font-extrabold">View Fullscreen</span>
                     </div>
                   </div>
                 </motion.div>
@@ -208,21 +188,26 @@ export default function GalleryGrid({ initialImages }: GalleryGridProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              className="fixed inset-0 z-50 flex flex-col justify-between bg-[#050514]/95 backdrop-blur-lg p-6 md:p-10"
+              className="fixed inset-0 z-50 flex flex-col justify-between bg-white/98 backdrop-blur-lg p-6 md:p-10"
               onClick={() => setLightboxIndex(null)}
             >
               {/* Top Controls Bar */}
-              <div className="w-full flex justify-between items-center text-white z-55 pointer-events-none">
-                <span className="text-xs md:text-sm font-extrabold tracking-widest uppercase text-slate-400">
-                  {filteredImages[lightboxIndex].category}
-                </span>
+              <div className="w-full flex justify-between items-start text-slate-900 z-55 pointer-events-none">
+                <div className="pr-4 pointer-events-auto">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#f5802b] px-3 py-1 bg-brand-orange/10 border border-brand-orange/20 rounded-full">
+                    {filteredImages[lightboxIndex].category}
+                  </span>
+                  <h3 className="font-display font-extrabold text-base md:text-xl text-slate-900 mt-2 leading-tight">
+                    {filteredImages[lightboxIndex].title}
+                  </h3>
+                </div>
 
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     setLightboxIndex(null);
                   }}
-                  className="w-10 h-10 bg-white/10 hover:bg-white text-white hover:text-[#050514] rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer pointer-events-auto shadow-md"
+                  className="p-3 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 rounded-full transition-all duration-300 cursor-pointer hover:rotate-90 shrink-0 pointer-events-auto shadow-sm"
                   aria-label="Close Lightbox"
                 >
                   <X className="w-5 h-5 stroke-[2.5]" />
@@ -237,7 +222,7 @@ export default function GalleryGrid({ initialImages }: GalleryGridProps) {
                 onTouchMove={onTouchMove}
                 onTouchEnd={onTouchEnd}
               >
-                <div className="relative w-full h-[55vh] md:h-[65vh] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center bg-black/40">
+                <div className="relative w-full h-[55vh] md:h-[65vh] rounded-2xl overflow-hidden border border-slate-100 flex items-center justify-center bg-slate-50 shadow-xl">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={lightboxIndex}
@@ -273,7 +258,7 @@ export default function GalleryGrid({ initialImages }: GalleryGridProps) {
                     e.stopPropagation();
                     handlePrev();
                   }}
-                  className="absolute left-[-16px] md:left-[-32px] top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white text-white hover:text-[#050514] rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer z-53 shadow-lg"
+                  className="absolute left-[-16px] md:left-[-32px] top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-100/90 hover:bg-slate-200 text-slate-800 rounded-full border border-slate-200 flex items-center justify-center transition-all duration-300 cursor-pointer z-53 shadow-md"
                   aria-label="Previous Photo"
                 >
                   <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
@@ -284,7 +269,7 @@ export default function GalleryGrid({ initialImages }: GalleryGridProps) {
                     e.stopPropagation();
                     handleNext();
                   }}
-                  className="absolute right-[-16px] md:right-[-32px] top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white text-white hover:text-[#050514] rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer z-53 shadow-lg"
+                  className="absolute right-[-16px] md:right-[-32px] top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-100/90 hover:bg-slate-200 text-slate-800 rounded-full border border-slate-200 flex items-center justify-center transition-all duration-300 cursor-pointer z-53 shadow-md"
                   aria-label="Next Photo"
                 >
                   <ChevronRight className="w-6 h-6 stroke-[2.5]" />
@@ -293,15 +278,15 @@ export default function GalleryGrid({ initialImages }: GalleryGridProps) {
 
               {/* Bottom details with Counter, Title and Thumbnail strip */}
               <div 
-                className="w-full text-center text-white z-53 flex flex-col items-center gap-3 mt-4"
+                className="w-full text-center text-slate-900 z-53 flex flex-col items-center gap-3 mt-4"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="space-y-1 max-w-2xl px-4">
-                  <p className="text-xs text-white/50">CMR School Kompally, Hyderabad</p>
+                  <p className="text-xs text-slate-500 font-medium">CMR School Kompally, Hyderabad</p>
                 </div>
 
                 {/* Image Counter */}
-                <div className="text-white/60 text-xs md:text-sm font-semibold tracking-widest uppercase">
+                <div className="text-slate-600 text-xs md:text-sm font-semibold tracking-widest uppercase">
                   {lightboxIndex + 1} / {filteredImages.length}
                 </div>
 
@@ -318,7 +303,7 @@ export default function GalleryGrid({ initialImages }: GalleryGridProps) {
                       className={`relative w-[60px] h-[45px] shrink-0 rounded-lg overflow-hidden border-2 transition-all duration-300 ${
                         lightboxIndex === idx
                           ? 'border-[#f5802b] opacity-100 scale-105 shadow-md'
-                          : 'border-transparent opacity-40 hover:opacity-75'
+                          : 'border-transparent opacity-50 hover:opacity-90'
                       }`}
                     >
                       <Image

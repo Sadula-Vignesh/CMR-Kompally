@@ -7,6 +7,8 @@ import SplashScreen from './SplashScreen';
 export default function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
   const [showSplash, setShowSplash] = useState(true);
 
+  const [animationDone, setAnimationDone] = useState(false);
+
   const handleSplashComplete = () => {
     setShowSplash(false);
   };
@@ -15,6 +17,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
     // Disable body scroll while splash is active
     if (showSplash) {
       document.body.style.overflow = 'hidden';
+      setAnimationDone(false);
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -36,7 +39,15 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
         initial={{ opacity: 0, y: 15 }}
         animate={!showSplash ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
         transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1], delay: 0.15 }}
-        style={{ opacity: showSplash ? 0 : 1 }}
+        style={{ 
+          opacity: showSplash ? 0 : 1,
+          transform: animationDone ? 'none' : undefined 
+        }}
+        onAnimationComplete={() => {
+          if (!showSplash) {
+            setAnimationDone(true);
+          }
+        }}
         className="min-h-screen flex flex-col w-full"
       >
         {children}
